@@ -62,31 +62,37 @@ export function FileUpload({ onFileLoad, className }: FileUploadProps) {
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         className={cn(
-          'flex flex-col items-center justify-center w-full h-48 border-2 border-dashed rounded-xl cursor-pointer transition-all duration-200',
-          'bg-muted/30 hover:bg-muted/50',
+          'group flex flex-col items-center justify-center w-full h-64 border-2 border-dashed cursor-pointer transition-all',
           isDragging 
-            ? 'border-primary bg-primary/5' 
-            : 'border-border hover:border-primary/50',
-          error && 'border-destructive/50'
+            ? 'border-accent bg-accent/10' 
+            : 'border-foreground hover:bg-secondary/50',
+          error && 'border-destructive'
         )}
       >
-        <div className="flex flex-col items-center justify-center pt-5 pb-6">
-          {fileName ? (
+        <div className="flex flex-col items-center justify-center p-8">
+          {fileName && !error ? (
             <>
-              <FileJson className="w-10 h-10 mb-3 text-primary" />
-              <p className="text-sm font-medium text-foreground">{fileName}</p>
-              <p className="text-xs text-muted-foreground mt-1">Click or drop to replace</p>
+              <FileJson className="w-12 h-12 mb-4 text-foreground" strokeWidth={1.5} />
+              <p className="text-lg font-bold text-foreground">{fileName}</p>
+              <p className="text-xs uppercase tracking-[0.15em] text-muted-foreground mt-2">
+                Drop another to replace
+              </p>
             </>
           ) : (
             <>
-              <Upload className={cn(
-                "w-10 h-10 mb-3 transition-colors",
-                isDragging ? "text-primary" : "text-muted-foreground"
-              )} />
-              <p className="mb-2 text-sm text-muted-foreground">
-                <span className="font-semibold text-foreground">Click to upload</span> or drag and drop
+              <Upload 
+                className={cn(
+                  "w-12 h-12 mb-4 transition-transform group-hover:-translate-y-1",
+                  isDragging ? "text-accent" : "text-foreground"
+                )} 
+                strokeWidth={1.5} 
+              />
+              <p className="text-lg font-bold text-foreground mb-1">
+                Drop JSON here
               </p>
-              <p className="text-xs text-muted-foreground">Label Studio JSON export</p>
+              <p className="text-xs uppercase tracking-[0.15em] text-muted-foreground">
+                Or click to browse
+              </p>
             </>
           )}
         </div>
@@ -101,7 +107,7 @@ export function FileUpload({ onFileLoad, className }: FileUploadProps) {
         />
       </label>
       {error && (
-        <div className="flex items-center gap-2 mt-3 text-sm text-destructive">
+        <div className="flex items-center gap-2 mt-4 text-sm text-destructive font-medium">
           <AlertCircle className="w-4 h-4" />
           {error}
         </div>

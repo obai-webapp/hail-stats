@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { BarChart3 } from 'lucide-react';
 import { FileUpload } from '@/components/FileUpload';
 import { StatsDashboard } from '@/components/StatsDashboard';
 import { parseDataset } from '@/lib/labelStudioParser';
@@ -16,57 +15,85 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-10">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4">
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-primary/10">
-              <BarChart3 className="w-5 h-5 text-primary" />
-            </div>
+      {/* Header - Editorial masthead style */}
+      <header className="border-b-2 border-foreground">
+        <div className="max-w-7xl mx-auto px-6 py-6">
+          <div className="flex items-baseline justify-between">
             <div>
-              <h1 className="text-lg font-semibold text-foreground">Hail Damage Stats</h1>
-              <p className="text-xs text-muted-foreground">Label Studio Export Analyzer</p>
+              <h1 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-foreground">
+                HAILSTATS
+              </h1>
+              <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground mt-1">
+                Damage Analysis Terminal
+              </p>
+            </div>
+            <div className="text-right hidden sm:block">
+              <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+                System Status
+              </p>
+              <p className="text-sm font-mono text-status-safe">● READY</p>
             </div>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+      <main className="max-w-7xl mx-auto px-6 py-10">
         {!stats ? (
-          <div className="max-w-xl mx-auto">
-            <div className="text-center mb-8">
-              <h2 className="text-2xl font-semibold text-foreground mb-2">
-                Upload Your Export
-              </h2>
-              <p className="text-muted-foreground">
-                Drop a Label Studio JSON export to compute hail damage statistics
+          <div className="grid lg:grid-cols-2 gap-12 items-start">
+            {/* Left - Hero text */}
+            <div className="space-y-8">
+              <div>
+                <p className="data-label mb-4">Input Required</p>
+                <h2 className="text-4xl sm:text-5xl font-black leading-none tracking-tight text-foreground">
+                  Drop your
+                  <br />
+                  export file
+                  <span className="text-accent">.</span>
+                </h2>
+              </div>
+              
+              <p className="text-lg text-muted-foreground max-w-md leading-relaxed">
+                Upload a Label Studio JSON export. We'll crunch the numbers and give you 
+                the raw breakdown—damage rates, dent distributions, panel stats.
               </p>
+
+              {/* CLI hint */}
+              <div className="border-2 border-foreground p-4 inline-block">
+                <p className="data-label mb-2">CLI Usage</p>
+                <code className="text-sm font-mono text-foreground">
+                  stats --in export.json --out stats.csv
+                </code>
+              </div>
             </div>
-            <FileUpload onFileLoad={handleFileLoad} />
-            
-            {/* CLI Usage */}
-            <div className="mt-8 p-4 rounded-xl bg-muted/30 border">
-              <h3 className="text-sm font-medium text-foreground mb-2">CLI Usage</h3>
-              <code className="text-xs text-muted-foreground font-mono">
-                stats --in export.json --out stats.csv
-              </code>
+
+            {/* Right - Upload zone */}
+            <div>
+              <FileUpload onFileLoad={handleFileLoad} />
             </div>
           </div>
         ) : (
           <div>
-            <div className="mb-6">
-              <button
-                onClick={() => setStats(null)}
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-              >
-                ← Upload another file
-              </button>
-            </div>
+            <button
+              onClick={() => setStats(null)}
+              className="group flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors mb-8"
+            >
+              <span className="inline-block transform group-hover:-translate-x-1 transition-transform">←</span>
+              NEW ANALYSIS
+            </button>
             <StatsDashboard stats={stats} />
           </div>
         )}
       </main>
+
+      {/* Footer */}
+      <footer className="border-t-2 border-foreground mt-auto">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+            Built for damage assessment workflows
+          </p>
+        </div>
+      </footer>
     </div>
   );
 };
