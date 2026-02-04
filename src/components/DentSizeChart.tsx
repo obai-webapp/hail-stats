@@ -79,7 +79,6 @@ export function DentSizeChart({ data, className }: DentSizeChartProps) {
                 fontSize: 11, 
                 fill: 'hsl(0, 0%, 5%)',
                 fontWeight: 700,
-                textTransform: 'uppercase'
               }}
               width={100}
             />
