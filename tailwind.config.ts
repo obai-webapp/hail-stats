@@ -1,5 +1,12 @@
 import type { Config } from "tailwindcss";
 
+// Status color utility for damage states
+const statusColors = {
+  damage: "hsl(var(--status-damage))",
+  safe: "hsl(var(--status-safe))",
+  pending: "hsl(var(--status-pending))",
+};
+
 export default {
   darkMode: ["class"],
   content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
