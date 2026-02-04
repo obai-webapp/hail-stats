@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { Copy, Check, MessageSquare } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Copy, Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface SlackSummaryProps {
@@ -18,17 +17,25 @@ export function SlackSummary({ summary, className }: SlackSummaryProps) {
   };
 
   return (
-    <div className={cn('rounded-xl border bg-card overflow-hidden', className)}>
-      <div className="px-5 py-4 border-b bg-muted/30 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <MessageSquare className="w-4 h-4 text-muted-foreground" />
-          <h3 className="font-semibold text-foreground">Slack Summary</h3>
+    <div className={cn('border-2 border-foreground bg-card', className)}>
+      {/* Header */}
+      <div className="px-5 py-4 border-b-2 border-foreground flex items-center justify-between">
+        <div>
+          <h3 className="text-xs uppercase tracking-[0.2em] font-bold text-foreground">
+            Slack Summary
+          </h3>
+          <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground mt-1">
+            Ready to paste
+          </p>
         </div>
-        <Button
-          variant="outline"
-          size="sm"
+        <button
           onClick={handleCopy}
-          className="gap-2"
+          className={cn(
+            'flex items-center gap-2 px-4 py-2 border-2 font-bold text-xs uppercase tracking-wider transition-all',
+            copied 
+              ? 'border-status-safe bg-status-safe text-white' 
+              : 'border-foreground hover:bg-foreground hover:text-primary-foreground'
+          )}
         >
           {copied ? (
             <>
@@ -41,9 +48,11 @@ export function SlackSummary({ summary, className }: SlackSummaryProps) {
               Copy
             </>
           )}
-        </Button>
+        </button>
       </div>
-      <pre className="p-5 text-sm font-mono whitespace-pre-wrap text-foreground/90 overflow-x-auto">
+
+      {/* Content */}
+      <pre className="p-5 text-sm font-mono whitespace-pre-wrap text-foreground leading-relaxed overflow-x-auto bg-secondary/30">
         {summary}
       </pre>
     </div>

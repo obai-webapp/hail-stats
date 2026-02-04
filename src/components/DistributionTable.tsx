@@ -1,11 +1,3 @@
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
 interface DistributionTableProps {
@@ -24,53 +16,78 @@ export function DistributionTable({
   className 
 }: DistributionTableProps) {
   const total = data.reduce((sum, item) => sum + item.value, 0);
+  const hasSecondary = data.some(item => item.secondaryValue !== undefined);
   
   return (
-    <div className={cn('rounded-xl border bg-card overflow-hidden', className)}>
-      <div className="px-5 py-4 border-b bg-muted/30">
-        <h3 className="font-semibold text-foreground">{title}</h3>
+    <div className={cn('border-2 border-foreground bg-card', className)}>
+      {/* Header */}
+      <div className="px-5 py-4 border-b-2 border-foreground">
+        <h3 className="text-xs uppercase tracking-[0.2em] font-bold text-foreground">{title}</h3>
       </div>
+
       {data.length === 0 ? (
-        <div className="px-5 py-8 text-center text-sm text-muted-foreground">
-          {emptyMessage}
+        <div className="px-5 py-10 text-center">
+          <p className="text-sm text-muted-foreground">{emptyMessage}</p>
         </div>
       ) : (
-        <Table>
-          <TableHeader>
-            <TableRow className="hover:bg-transparent">
-              {columns.map((col, i) => (
-                <TableHead key={i} className={i > 0 ? 'text-right' : ''}>
-                  {col}
-                </TableHead>
-              ))}
-              <TableHead className="text-right">%</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {data.map((item, i) => (
-              <TableRow key={i}>
-                <TableCell className="font-medium">{item.label}</TableCell>
-                <TableCell className="text-right tabular-nums">{item.value}</TableCell>
-                {item.secondaryValue !== undefined && (
-                  <TableCell className="text-right tabular-nums text-muted-foreground">
-                    {item.secondaryValue}
-                  </TableCell>
+        <div className="divide-y divide-border">
+          {/* Column headers */}
+          <div className={cn(
+            'grid gap-4 px-5 py-3 bg-secondary/30 text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-medium',
+            hasSecondary ? 'grid-cols-4' : 'grid-cols-3'
+          )}>
+            <div>{columns[0]}</div>
+            <div className="text-right">{columns[1]}</div>
+            {hasSecondary && <div className="text-right">{columns[2]}</div>}
+            <div className="text-right">%</div>
+          </div>
+
+          {/* Data rows */}
+          {data.map((item, i) => {
+            const percentage = total > 0 ? ((item.value / total) * 100) : 0;
+            return (
+              <div 
+                key={i} 
+                className={cn(
+                  'grid gap-4 px-5 py-3 items-center hover:bg-secondary/20 transition-colors',
+                  hasSecondary ? 'grid-cols-4' : 'grid-cols-3'
                 )}
-                <TableCell className="text-right tabular-nums text-muted-foreground">
-                  {total > 0 ? ((item.value / total) * 100).toFixed(1) : 0}%
-                </TableCell>
-              </TableRow>
-            ))}
-            <TableRow className="bg-muted/30 font-medium">
-              <TableCell>Total</TableCell>
-              <TableCell className="text-right tabular-nums">{total}</TableCell>
-              {data[0]?.secondaryValue !== undefined && (
-                <TableCell className="text-right tabular-nums">—</TableCell>
-              )}
-              <TableCell className="text-right tabular-nums">100%</TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
+              >
+                <div className="font-medium text-sm uppercase tracking-wide">{item.label}</div>
+                <div className="text-right font-mono text-sm tabular-nums font-bold">{item.value}</div>
+                {hasSecondary && (
+                  <div className="text-right font-mono text-sm tabular-nums text-muted-foreground">
+                    {item.secondaryValue ?? '—'}
+                  </div>
+                )}
+                <div className="text-right">
+                  <div className="flex items-center justify-end gap-2">
+                    <div className="w-16 h-1.5 bg-border overflow-hidden">
+                      <div 
+                        className="h-full bg-foreground transition-all" 
+                        style={{ width: `${percentage}%` }}
+                      />
+                    </div>
+                    <span className="font-mono text-xs tabular-nums w-12 text-right text-muted-foreground">
+                      {percentage.toFixed(1)}%
+                    </span>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+
+          {/* Total row */}
+          <div className={cn(
+            'grid gap-4 px-5 py-3 bg-foreground text-primary-foreground font-bold',
+            hasSecondary ? 'grid-cols-4' : 'grid-cols-3'
+          )}>
+            <div className="text-sm uppercase tracking-wide">Total</div>
+            <div className="text-right font-mono text-sm tabular-nums">{total}</div>
+            {hasSecondary && <div className="text-right">—</div>}
+            <div className="text-right font-mono text-sm">100%</div>
+          </div>
+        </div>
       )}
     </div>
   );
