@@ -2,6 +2,7 @@ import { FileDown, Database, AlertTriangle, CheckCircle2, Clock } from 'lucide-r
 import { StatCard } from './StatCard';
 import { DistributionTable } from './DistributionTable';
 import { DentSizeChart } from './DentSizeChart';
+import { DamageBreakdownChart } from './DamageBreakdownChart';
 import { SlackSummary } from './SlackSummary';
 import type { DatasetStats } from '@/types/labelStudio';
 import { generateCSV, generateSlackSummary } from '@/lib/labelStudioParser';
@@ -91,8 +92,15 @@ export function StatsDashboard({ stats }: StatsDashboardProps) {
         />
       </div>
 
-      {/* Dent Size Chart - Full width */}
-      <DentSizeChart data={stats.dentSizeDistribution} />
+      {/* Charts Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <DamageBreakdownChart 
+          damageCount={stats.damageCount}
+          noDamageCount={stats.noDamageCount}
+          pendingCount={stats.pendingCount}
+        />
+        <DentSizeChart data={stats.dentSizeDistribution} />
+      </div>
 
       {/* Distributions Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
