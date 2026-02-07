@@ -150,20 +150,7 @@ src/
 | `npm run lint` | Run ESLint |
 | `npm run test` | Run Vitest tests |
 
-## Customization
-
-### Design Tokens
-
-Colors and design tokens are defined in `src/index.css`. The application uses HSL color values for consistent theming:
-
-```css
-:root {
-  --background: 0 0% 3%;
-  --foreground: 0 0% 98%;
-  --primary: 45 100% 50%;
-  /* ... */
-}
-```
+ 
 
 ### Adding New Charts
 
