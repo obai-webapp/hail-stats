@@ -169,3 +169,6 @@ MIT
 3. Commit changes (`git commit -m 'Add new chart type'`)
 4. Push to branch (`git push origin feature/new-chart`)
 5. Open a Pull Request
+
+
+<!-- Internal Tool Created By MashobTechie -->
